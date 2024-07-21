@@ -8,19 +8,55 @@ const Geninfo = () => {
   const [phone, setPhone] = useState();
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
+  const [data, setdata] = useState([]);
+  const [editId, seteditId] = useState();
 
   const handlesubmit = (e) => {
     e.preventDefault();
+    if (editId) {
+      setdata(
+        data.map((item) =>
+          item.id === editId
+            ? {
+                name,
+                email,
+                phone,
+                address,
+                city,
+                id: editId,
+              }
+            : item
+        )
+      );
+      setdata(null);
+    } else {
+      setdata([
+        ...data,
+        {
+          name,
+          email,
+          phone,
+          address,
+          city,
+          id: Date.now(),
+        },
+      ]);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setAddress('');
+      setCity('');
+    }
+  };
 
-    const data = {
-      name,
-      email,
-      phone,
-      address,
-      city,
-      id: Date.now(),
-    };
-    console.log(data);
+  const handleEditid = (id) => {
+    const item = data.find((item) => item.id === id);
+    setName(item.name);
+    setEmail(item.email);
+    setPhone(item.phone);
+    setAddress(item.address);
+    setCity(item.city);
+    seteditId(id);
   };
 
   return (
@@ -65,44 +101,71 @@ const Geninfo = () => {
           <div>
             <h1>General information</h1>
           </div>
-          <label>Name</label>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <label>Email</label>
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <label>Phone</label>
-          <input
-            type="number"
-            placeholder="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <label>Address</label>
-          <input
-            type="text"
-            placeholder="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <label>City</label>
-          <input
-            type="text"
-            placeholder="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-          <button>Submit</button>
-          <button>Edit</button>
+          <div className="input1">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input2">
+            <label>Email</label>
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input3">
+            <label>Phone</label>
+            <input
+              type="number"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input4">
+            <label>Address</label>
+            <input
+              type="text"
+              placeholder="Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </div>
+          <div className="input4">
+            <label>City</label>
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              required
+            />
+          </div>
+          <button className="btn">Submit</button>
         </form>
+        {data.map((item) => (
+          <div>
+            <h2>
+              submited Data:
+              {item.name}
+              {item.email}
+              {item.phone}
+              {item.address}
+              {item.city}
+            </h2>
+            <button onClick={() => handleEditid(item.id)}>Edit</button>
+          </div>
+        ))}
       </div>
     </>
   );
