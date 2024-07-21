@@ -6,7 +6,7 @@ import Exp from './Exp';
 
 const router = createBrowserRouter([
   {
-    path: '/Geninfo',
+    path: '/',
     element: <Geninfo />,
   },
   {
